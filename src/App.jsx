@@ -1,73 +1,52 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import { Layout } from "./components/layout";
+import { Home } from "./pages/home";
+import { About } from "./pages/about";
+import { NotFound } from "./components/not-found";
+import { Users } from "./pages/users";
+import { UserDetails } from "./pages/user-details";
+import { ErrorPage } from "./components/error-page"
+import { Search } from "./pages/search";
 
-const MainLayout = ({children}) => {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "user/:id",
+        element: <UserDetails />,
+      },
+      {
+        path: "search",
+        element: <Search />,
+      },
+    
+    ],
+  },
+]);
+
+function AppRouter() {
   return (
-    <>
-      <Nav/>
-      {children}
-      <Footer/>
-    </>
-     
+    <RouterProvider router = {router}/>
   )
 }
 
-const Nav = () => {
-  return (
-    <nav>
-    <Link to ="/about">About</Link>   
-    <Link to = "/"> Home </Link>
-  </nav> 
-  )
-}
-
-
-
-const Home = () => {
-  return (
-    <>
-      <div>Home</div>
-    </>    
-  )
-}
-
-const About = () => {
-  return (
-    <>
-      <div>About</div>
-    </>  
-  )
-}
-
-const Footer = () => {
-  return (
-    <>
-      <div>Footer</div>
-    </>
-  )
-}
-
-const NotFound = ()=> {
-  return (
-    <>
-    <h2>404</h2>
-    <h3>Page Not Found</h3>
-    <Link to = "/"> Home </Link>
-    </>
-  )
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </MainLayout>  
-    </BrowserRouter>
-  )
-}
-
-export default App
+export default AppRouter
